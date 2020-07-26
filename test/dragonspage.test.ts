@@ -3,11 +3,16 @@ import * as cdk from '@aws-cdk/core';
 import * as Dragonspage from '../lib/dragonspage-stack';
 
 test('Empty Stack', () => {
-    const app = new cdk.App();
-    // WHEN
-    const stack = new Dragonspage.DragonspageStack(app, 'MyTestStack');
-    // THEN
-    expectCDK(stack).to(matchTemplate({
-      "Resources": {}
-    }, MatchStyle.EXACT))
+  const app = new cdk.App();
+  // WHEN
+  const stack = new Dragonspage.DragonspageStack(app, 'MyTestStack');
+  // THEN
+  expectCDK(stack).to(
+    matchTemplate(
+      {
+        Resources: {},
+      },
+      MatchStyle.EXACT,
+    ),
+  );
 });

@@ -1,0 +1,7 @@
+{
+    "dragon_name": "tallie",
+    "dragon_type": "red",
+    "description": "breaths fire",
+    "attack": 7,
+    "defense": 10
+}

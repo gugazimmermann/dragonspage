@@ -1,0 +1,7 @@
+{
+    "dragon_name": "sparky",
+    "dragon_type": "green",
+    "description": "breaths acid",
+    "attack": 10,
+    "defense": 7
+}
