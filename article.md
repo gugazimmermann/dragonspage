@@ -1,27 +1,24 @@
 # DRAGONS PAGE
 
+## WebSite using DynamoDB created with AWS-CDK
+
 RUNNING CODE: http://dragonspagestack-drangonswebsitebucket13f805ec-eumb1tfov1i5.s3-website.us-east-2.amazonaws.com/
 
-CODE REPOSITORY: https://github.com/gugazimmermann/dragonspage.git
+LINKEDIN: https://www.linkedin.com/pulse/website-using-dynamodb-created-aws-cdk-zimmermann-negreiros/
 
-DRAGONS PAGE changes the exercices of the course **Amazon DynamoDB: Building NoSQL Database-Driven Applications**  https://www.coursera.org/learn/dynamodb-nosql-database-driven-apps/home/welcome to be done using the AWS CDK.
+**DRAGONS PAGE** changes the exercices of the course **Amazon DynamoDB: Building NoSQL Database-Driven Applications**  https://www.coursera.org/learn/dynamodb-nosql-database-driven-apps/home/welcome to be done using the AWS CDK. Thanks to Seph Robinson, Morgan Willis and Rick H for the course. (I also recommend the specialization AWS Fundamentals: Going Cloud-Native that I did before.)
 
-Thanks to Seph Robinson, Morgan Willis and Rick H for the course.
-
-This will help you to learn how to develop using the AWS Cloud Development Kit (AWS CDK).
+> This will help you to learn how to develop using the AWS Cloud Development Kit (AWS CDK).
 
 ## The Story:
 
-*One of your best friends (Mary) who you've known for years has come to you for help.*
+*“One of your best friends (Mary) who you’ve known for years has come to you for help.*
 
-*Mary has always been obsessed with fantasy dragons, and she has recently set up a gaming company and her latest project is a new dragon card game. She don't have a website for their game yet and have been doing everything manually, even drawing the cards themselves.*
+*Mary has always been obsessed with fantasy dragons, and she has recently set up a gaming company and her latest project is a new dragon card game. She doesn’t have a website for their game yet and has been doing everything manually, even drawing the cards.*
 
-*The problem is that she's not very tech savvy, which is why Mary reached out to you. There is currently no way to look up card details online.* 
+*The problem is that she’s not very tech-savvy, which is why Mary reached out to you. There is currently no way to look up card details online. She has asked you to help her create a simple webpage that can show all the dragon cards when the page loads, and to be able to show any card and all of its information by doing a simple search on a dragon name.*
 
-*Mary has asked you to help her create a simple webpage that can show all the dragon cards when the page loads, and to be able to show any card and all of its information by doing a simple search on a dragon name.* 
-
-*You don't even ask what budget she has, as you already know the answer. Zero. Besides, you want the practice, as you are sitting your developing on AWS exam shortly.*
-
+*You don’t even ask what budget she has, as you already know the answer. Zero. Besides, you want the practice, as you are sitting your developing on the AWS exam shortly.”* 
 
 #### Before we start
 
@@ -114,11 +111,11 @@ now in `package.json` modify *scripts*:
 
 ## Part 1 - Creating the DynamoDB table and API calls
 
-*You figure that a basic page with a search box, some CSS and a bit of API calls to a database  would probably work as a prototype. As you are planning on sitting your AWS developer associate exam shortly, you decide to force yourself to do most of these activities using the AWS CDK and get comfortable with code.*
+*“You figure that a basic page with a search box, some CSS, and a few API calls to a database would probably work as a prototype. As you are planning on sitting your AWS developer associate exam shortly, you decide to force yourself to do most of these activities using the AWS CDK and get comfortable with code.*
 
-*You think the best place to start is to create a DynamoDB table with an open schema. This way you can decide on the schema once you know what the data looks like, and how you plan on querying the data.*
+*You think the best place to start is to create a DynamoDB table with an open schema. This way you can decide on the schema once you know what the data looks like, and how you plan on querying the data.”*
 
-Let's start creating the first DynamoDB table. First we need the DynamoDB dependency `npm i @aws-cdk/aws-dynamodb` now inside `lib/dragonspage-stack.ts` we need to import dynamodb and then create the table inside the constructor:
+Let’s start creating the DynamoDB table. First, we need the DynamoDB dependency `npm i @aws-cdk/aws-dynamodb` and now, inside `lib/dragonspage-stack.ts` we need to import DynamoDB and then create the table inside the constructor:
 
 ```
 import * as cdk from '@aws-cdk/core';
@@ -137,11 +134,10 @@ export class DragonspageStack extends cdk.Stack {
 }
 ```
 
-This will create a new DynamoDB table with the `dragon_name` as a Partition Key (PK), set the billing mode to Pay Per Request (so we don't need to privide the write and read capacity) and set to destroy the resource if we decide to delete. (and since this is a test one, we wanna it).
+This will create a new DynamoDB table with the **dragon_name** as a **Partition Key (PK)**, set the billing mode to Pay Per Request (so we don't need to provide the write and read capacity) and set to destroy the resource if we decide to delete. (and since this is a test one, we wanna it).
 
-Now that we have a table, so we need a way to get, post and delete items, to do it we will create a lambda function and a API endpoint to call it.
+Now we have a table, so we need a way to Get, Post, and Delete items, to do it we will create a lambda function and an API endpoint to call it. Start creating the file `src/lambda/dragonsHandler.ts`, inside this file, we will put t lambda code that uses AWS-SDK, so let's install `npm i aws-sdk @types/aws-lambda`.
 
-Start creating the file `src/lambda/dragonsHandler.ts`, inside this file we will put lambda code that uses aws-sdk, so let's install `npm i aws-sdk @types/aws-lambda`.
 
 ```
 import AWS = require('aws-sdk');
@@ -222,11 +218,11 @@ export interface IDragon {
 }
 ```
 
-Now in this file we have a lambda function to Get all the dragons, add a dragon, and delete a dragon. This is far to be a perfect scenario, and scan is not the right way to get items, but since we have just a few dragons to show to Mary, the code is good enough.
+In this file, we have a lambda function to Get all the dragons, Add a dragon, and Delete a dragon. This is far to be a perfect scenario, and Scan is not the right way to get items, but since we have just a few dragons to show to Mary, the code is good enough.
 
 Open again `lib/dragonspage-stack.ts` to make the lambda work with the table and create the API endpoint that we can access.
 
-Again we'll need some dependencies: `npm i @aws-cdk/aws-lambda @aws-cdk/aws-apigateway`
+Again we’ll need some dependencies: `npm i @aws-cdk/aws-lambda @aws-cdk/aws-apigateway`
 
 ```
 import * as cdk from '@aws-cdk/core';
@@ -265,9 +261,9 @@ export class DragonspageStack extends cdk.Stack {
   }
 }
 ```
-Just after the table we add the lambda to the stack (and change the default memory and timeout to avoid that if some problem happen the code will not be stucked for 15 min). After that we give permition to the lambda be able to read and write data inside the DynamoDB table. And in the end we create the API endpoint.
+Just after the table, we add the lambda into the stack (and change the default memory and timeout to avoid that if some problem happens the code will not be stuck for 15 min). After that, we permit the lambda to be able to read and write data inside the DynamoDB table. And in the end, we create the API endpoint.
 
-To publish the CloudFormation to create all the services that we want, just run `cdk deploy`, and wait to receive the API Endpoint - **save this url because we will use it**.
+To publish the CloudFormation to create all the services that we want, just run `cdk deploy`, and wait to receive the API Endpoint - **save this URL because we will use it**.
 
 **✅  DragonspageStack**
 
@@ -285,15 +281,15 @@ bin/dpage.ts:4:10 - error TS2305: Module '"../lib/dpage-stack"' has no exported 
 Subprocess exited with error 1
 ```
 
-is because you are not using `dragonspage` as the main folder. In the error above the folder is `dpage`, so to fix just rename `lib/dragonspage-stack.ts` to `lib/dpage-stack.ts` and `export class DragonspageStack extends cdk.Stack` to `export class DpageStack extends cdk.Stack`
+Is because you are not using the `dragonspage` as the main folder. In the error above the folder is `dpage`, so to fix just rename `lib/dragonspage-stack.ts` to `lib/dpage-stack.ts` and `export class DragonspageStack extends cdk.Stack` to `export class DpageStack extends cdk.Stack`.
 
 ### Story continued
 
-*Now you have your database ready, it's time to seed it with some data. You asked Mary for some card data and she has promised to email you a JSON document with all the card data and some dragon images. However, she keeps delaying. So, you think it's a good idea to add a few items to help you create a basic proof of concept.*
+*“Now you have your database ready, it’s time to seed it with some data. You asked Mary for some card data and she has promised to email you a JSON document with all the card data and some dragon images. However, she keeps delaying. So, you think it’s a good idea to add a few items to help you create a basic proof of concept.*
 
 *The API will return all the data in the database to the website. You only have 2 images from her so far, so your database needs to have only 2 items.*
 
-*Your next step is to add a couple of dragon items to the database table that you just created. You think dragon info would look a bit like this (you are guessing). So you add this as a starting point while you wait for Mary to email you the real data.*
+*Your next step is to add a couple of dragon items to the database table that you just created. You think dragon info would look a bit like this (you are guessing). So you add this as a starting point while you wait for Mary to email you the real data.”*
 
 | Primary Key (dragon_name) | dragon_type | description  | attack | defense |
 | ------------------------- | ----------- | ------------ | ------ | ------- |
@@ -303,9 +299,7 @@ is because you are not using `dragonspage` as the main folder. In the error abov
 
 ### Using the API Endpoint
 
-Remember the file `./interfaces/dragon.ts`? Now this file can be used as a base to create the dragon's data json files.
-
-Create the folder `./data` and inside:
+Remember `./interfaces/dragon.ts`? Now, this file can be used as a base to create the dragon's data JSON files. Create the folder `./data` and inside:
 
 dragon1.json
 ```
@@ -328,17 +322,15 @@ dragon2.json
 }
 ```
 
-To hit the endpoint we can use CURL, so let's see if it works: `curl <URL_ENDPOINT>` the return will be just a empty array `[]`.
+To hit the endpoint we can use CURL, so let’s see if it works: `curl <URL_ENDPOINT>` the return will be just an empty array `[ ]`.
 
-To add the dragons, run in the root folder `./` of your project (probably *dragonspage* if you are following the instructions): 
+To add the dragons, run in the root folder `./` of your project (probably dragonspage if you are following the instructions):
 
-Add Dragon 1
-`curl --header "Content-Type: application/json" --request POST --data @data/dragon1.json <URL_ENDPOINT>`
+Add Dragon 1: curl --header "Content-Type: application/json" --request POST --data @data/dragon1.json <URL_ENDPOINT>
 
-Add Dragon 2
-`curl --header "Content-Type: application/json" --request POST --data @data/dragon2.json <URL_ENDPOINT>`
+Add Dragon 2: curl --header "Content-Type: application/json" --request POST --data @data/dragon2.json <URL_ENDPOINT>
 
-Now if you run again `curl <URL_ENDPOINT>` the result will be:
+Run again `curl <URL_ENDPOINT>` and the result will be:
 
 ```
 [
@@ -361,23 +353,19 @@ Now if you run again `curl <URL_ENDPOINT>` the result will be:
 
 Yeah, this is what we want. But if for some reason we send the wrong dragon data and want to delete, just run:
 
-`curl --header "Content-Type: application/json" --request DELETE --data '{"dragon_name": "<DRAGON_NAME>"}' <URL_ENDPOINT>`
+curl --header "Content-Type: application/json" --request DELETE --data '{"dragon_name": "<DRAGON_NAME>"}' <URL_ENDPOINT>
 
-To destroy everything just run `cdk destroy` and the output will be similar to this:
+To destroy everything just run `CDK destroy` and the output will be similar to this:
 
 **✅  DragonspageStack: destroyed**
 
-But we don't want to destroy everything right now, Mary would definitely not like this as we still have to show what we are doing.
-
-So let's create a quick React webpage to call the API and show the dragons that we have for now.
+But we don’t want to destroy everything right now, Mary would not like this as we still have to show what we are doing. So let’s create a quick React webpage to call the API and show the dragons that we have for now.
 
 ### Creating a React Single Page
 
-> NOTE: This is not the ideal thing to do, have the frontend and backend inside the same repo, but just to keep things simple we'll use this way, like a mono-repo.
+> NOTE: This is not the ideal thing to do, have the frontend and backend inside the same repo, but just to keep things simple we'll use this way, like a mono-repo. I'll go fast and dirty in this part, the focus of this article  is not React, but the CDK.
 
-> I'll go fast and dirty in this part, the focus of this article  is not React, but the CDK.
-
-First of all open `tsconfig.json` and add *frontend* to exclude `"exclude": ["cdk.out","frontend"]`. Now in root folder `./` of the project start a new react page running `npx create-react-app frontend --template typescript --use-npm`, and `cd frontend/` and `npm start`... yeah, probably you will receive a error like this one:
+First of all open `tsconfig.json` and add frontend to exclude `"exclude": ["cdk.out","frontend"]`. Now in the root folder `./` of the project start a new react page running `npx create-react-app frontend --template typescript --use-npm`, and `cd frontend/` then `npm start`... Right, probably you will receive an error like this one:
 
 ```
 The react-scripts package provided by Create React App requires a dependency:
@@ -390,13 +378,11 @@ However, a different version of babel-jest was detected higher up in the tree:
   /.../dragonspage/node_modules/babel-jest (version: 25.5.1)
 ```
 
-This is because react-create-app uses a different version of babel than are already installed by the CDK. No problem, we can create the file `frontend/.env` and add `SKIP_PREFLIGHT_CHECK=true`.
+This is because react-create-app uses a different version of `babel-jest` than are already installed by the CDK. No problem, we can create the file `frontend/.env` and add `SKIP_PREFLIGHT_CHECK=true`.
 
-Run `npm start` again and the default react page will open in the browser. Keep this tab running react, open a new one to work.
+Run `npm start` again and the default site will open in the browser. Keep the console tab running the react, open a new one to work.
 
-Let's add some dependencies in `frontend/` `npm install react-bootstrap bootstrap axios` and start the page.
-
-Fist copy the two dragons images to `frontend/public/`: 
+Let’s add some dependencies in `frontend/` `npm install react-bootstrap bootstrap axios` and start the page. First copy the two dragons images to `frontend/public/`:
 
 sparky.png
 ![Image of sparky](./frontend/public/sparky.png)
@@ -490,11 +476,11 @@ export default App;
 
 > NOTE: Do not forget to change the <API_ENDPOINT_URL>
 
-And we can see a Error
+The page is very simple by now, just to show what we have to Mary (we’ll come back here to make a lot of changes). Now look the page… we can see an Error :(
 
 ![Image of Error CORS](./error-cors.png)
 
-Looking the error info inside the Developer Tools is easy to identify that it's a CORS problem. To solve we need to open `src/lambda/dragonsHandler.ts` and change `const createResponse` 
+Looking at the error info inside the Developer Tools is easy to identify that it’s a CORS problem. To solve we need to open `src/lambda/dragonsHandler.ts` and change `const createResponse`
 
 ```
 const createResponse = (body: string | AWS.DynamoDB.DocumentClient.ItemList, statusCode = 200) => {
@@ -522,13 +508,9 @@ exports.handler = async function (event: AWSLambda.APIGatewayEvent) {
     ...
 ```
 
-Now we need to deploy ainda to update the CloudFormation, inside `./` run `cdk deploy` again. (the URL of the API Endpoint will not change). You can go back to the  Dragons Page and reload, now the 2 dragons that we have will be shown.
+Ok, let’s deploy to update the CloudFormation, inside `./` run `cdk deploy` again. (the URL of the API Endpoint will not change). You can go back to the Dragons Page and reload, now the 2 dragons that we have will be shown.
 
-We still have a problem, the website is running locally and Mary will not be able to see. So let's send to a public S3 Bucket.
-
-First we will need to install the dependencies in `./` (this is for the CDK, not the react) `npm i @aws-cdk/aws-s3 @aws-cdk/aws-s3-deployment`. Open `lib/dragonspage-stack.ts`.
-
-import s3 and s3-deployment
+We still have a problem, the website is running locally and Mary will not be able to see. So let’s send it to a public S3 Bucket. We will need to install the dependencies in `./` (this is for the CDK, not the react) `npm i @aws-cdk/aws-s3 @aws-cdk/aws-s3-deployment`. Open `lib/dragonspage-stack.ts`.
 
 ```
 import * as s3 from '@aws-cdk/aws-s3';
@@ -560,9 +542,11 @@ ENOENT: no such file or directory, stat '/dragonspage/frontend/build'
 Subprocess exited with error 1
 ```
 
-Just go to `frontend/` and run `npm run build` to create the optimized react site. (if you see some JSX error, just stop npm start, delete node_modules folder, run npm install again, then npm start and npm run build).
+Just go to `frontend/` and run `npm run build` to create the optimized react site.
 
-Back to `./` run `cdk diff` again... a lot of info in screen, but at the end you will see
+(if you see some JSX error, just stop npm start, delete node_modules folder, run npm install again, then npm start and npm run build).
+
+Back to `./` run `cdk diff` again... a lot of info on screen, but in the end, you will see:
 
 ```
 Outputs
@@ -581,13 +565,9 @@ DragonspageStack.DrangonsWebsiteURL = <WEBSITE_URL>
 Stack ARN: ...
 ```
 
-Just copy and paste the WEBSITE URL in the browser and you will be able to see the site running.
+Just copy and paste the WEBSITE URL in the browser and you will be able to see the site running. Now you can send the URL to Mary, after taking a look she will send more stuff to be done in PART 2 :)
 
-So now you can send the URL to Mary, she will send more stuff to be done in PART 2 :)
-
-Now, to not keep the resources inside AWS (and not pay), we can destroy the CloudFormation
-
-`cdk destroy`
+To not keep the resources inside AWS (and not pay for it), we can destroy the CloudFormation: `cdk destroy`
 
 **✅  DragonspageStack: destroyed**
 
@@ -595,4 +575,6 @@ Now, to not keep the resources inside AWS (and not pay), we can destroy the Clou
 
 RUNNING CODE: http://dragonspagestack-drangonswebsitebucket13f805ec-eumb1tfov1i5.s3-website.us-east-2.amazonaws.com/
 
-CODE REPOSITORY: https://github.com/gugazimmermann/dragonspage.git
+LINKEDIN: https://www.linkedin.com/pulse/website-using-dynamodb-created-aws-cdk-zimmermann-negreiros/
+
+**DRAGONS PAGE** changes the exercices of the course **Amazon DynamoDB: Building NoSQL Database-Driven Applications**  https://www.coursera.org/learn/dynamodb-nosql-database-driven-apps/home/welcome to be done using the AWS CDK. Thanks to Seph Robinson, Morgan Willis and Rick H for the course. (I also recommend the specialization AWS Fundamentals: Going Cloud-Native that I did before.)
