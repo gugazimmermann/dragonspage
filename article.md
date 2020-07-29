@@ -2,7 +2,7 @@
 
 ## WebSite using DynamoDB created with AWS-CDK
 
-RUNNING CODE: http://dragonspagestack-drangonswebsitebucket13f805ec-eumb1tfov1i5.s3-website.us-east-2.amazonaws.com/
+RUNNING CODE: http://dragonspagestack-drangonswebsitebucket13f805ec-z0ysimyw3vlt.s3-website.us-east-2.amazonaws.com/
 
 LINKEDIN: https://www.linkedin.com/pulse/website-using-dynamodb-created-aws-cdk-zimmermann-negreiros/
 
@@ -573,7 +573,7 @@ To not keep the resources inside AWS (and not pay for it), we can destroy the Cl
 
 # DRAGONS PAGE
 
-RUNNING CODE: http://dragonspagestack-drangonswebsitebucket13f805ec-eumb1tfov1i5.s3-website.us-east-2.amazonaws.com/
+RUNNING CODE: http://dragonspagestack-drangonswebsitebucket13f805ec-z0ysimyw3vlt.s3-website.us-east-2.amazonaws.com/
 
 LINKEDIN: https://www.linkedin.com/pulse/website-using-dynamodb-created-aws-cdk-zimmermann-negreiros/
 
