@@ -1,36 +1,39 @@
-# DRAGONS PAGE - Part 2
+# DRAGONS PAGE
 
-## WebSite using DynamoDB created with AWS-CDK
+## WebSite using DynamoDB created with AWS-CDK - Part 2
+
+> In this part we will continue Part 1, creating more tables, adding a lot of data, show all the dragons on the website, search for just the one that we need, and see how to solve a lot of issues that can appear during the development.
+
+> In the end, we will have a Bonus part, to show to do use a custom URL for the website and API endpoint.
 
 RUNNING CODE: https://www.pocz.io/
 
 LINKEDIN: 
 
-**DRAGONS PAGE** changes the exercices of the course **Amazon DynamoDB: Building NoSQL Database-Driven Applications**  https://www.coursera.org/learn/dynamodb-nosql-database-driven-apps/home/welcome to be done using the AWS CDK. Thanks to Seph Robinson, Morgan Willis and Rick H for the course. (I also recommend the specialization AWS Fundamentals: Going Cloud-Native that I did before.)
+**DRAGONS PAGE** changes the exercises of the course **Amazon DynamoDB: Building NoSQL Database-Driven Applications** https://www.coursera.org/learn/dynamodb-nosql-database-driven-apps/home/welcome to be done using the AWS CDK. Thanks to Seph Robinson, Morgan Willis, and Rick H for the course. (I also recommend the specialization AWS Fundamentals: Going Cloud-Native that I did before.)
 
 > This will help you to learn how to develop using the AWS Cloud Development Kit (AWS CDK).
 
 ## Story Continued:
 
-*"After Part-1 (https://github.com/gugazimmermann/dragonspage/tree/part-1) we have a proof of concept website that display dragon cards using data stored in DynamoDB. The website communicates with your API Gateway backend, and currently returns everything in the database.*
+*"After Part-1 (https://github.com/gugazimmermann/dragonspage/tree/part-1) we have a proof of concept website that displays dragon cards using data stored in DynamoDB. The website communicates with your API Gateway backend, and currently returns everything in the database.*
 
 *This is fine for a proof of concept, and when you call Mary and show her the website she is very happy with what we are doing. She tells you that she already has come up with an idea for a card template and asks if you can integrate that too? You say no problem, and ask her to email it to you along with the JSON files for all the dragon data that she has been promising you all week.*
 
-*She apologizes about the delay and tells you, you will have it in the next 5 minutes via email. 38 minutes later, you get the email. Your head sinks into your hands, as you see that she has a much more complex data requirement than the one you envisioned.*
+*She apologizes for the delay and tells you, you will have it in the next 5 minutes via email. 38 minutes later, you get the email. Your head sinks into your hands, as you see that she has a much more complex data requirement than the one you envisioned.*
 
-*It is basically a relational data structure with dragons of different types, having different skills and modifiers. Essentially she has given you all the data that would be required for an actual game engine. You are not building the game engine. She has other people lined up for that, thank goodness.*
+*It is a relational data structure with dragons of different types, having different skills and modifiers. Essentially she has given you all the data that would be required for an actual game engine. You are not building the game engine. She has other people lined up for that, thank goodness.*
 
-*However she still wants you to use DynamoDB to store this data for her, and leverage that to display card data on the website. You already know how to upload one item at a time with code, but that isn't feasible with the amount of data she has given you. You need to come up with a script that can upload multiple items to multiple tables.*
+*However, she still wants you to use DynamoDB to store this data for her, and leverage that to display card data on the website. You already know how to upload one item at a time with code, but that isn't feasible with the amount of data she has given you. You need to come up with a script that can upload multiple items to multiple tables.*
 
 #### Before we start
 
 Do not forgot to run `npm run watch` in the terminal to handle the .ts files.
-
 You can `cdk destroy` the part-1 stack.
  
 ## Create multiple DynamoDB
 
-So we decided to create multiple DynamoDB tables to store the JSON data that Mary sent to us, and since the code will be more complex, let's start spliting the code and create some CDK Constructs. We have all the stack code inside `lib/dragonspage-stack.ts`, so we can create `lib/dragons-backend.ts` to have the DynamoDB tables, Lambdas and APIs.
+So we decided to create multiple DynamoDB tables to store the JSON data that Mary sent to us, and since the code will be more complex, We can start splitting the code and create some CDK Constructs. Now all the code lives inside `lib/dragonspage-stack.ts`, so we can create `lib/dragons-backend.ts` to have the DynamoDB tables, Lambdas, and APIs.
 
 ```
 import * as cdk from '@aws-cdk/core';
@@ -72,7 +75,7 @@ export class DragonsBackend extends cdk.Construct {
 
 ```
 
-The `lib/dragons-frontend.ts` will take care of the S3 bucket and deployment of the website.
+The file `lib/dragons-frontend.ts` will take care of the S3 bucket and deployment of the website.
 
 ```
 import * as cdk from '@aws-cdk/core';
@@ -119,13 +122,13 @@ export class DragonspageStack extends cdk.Stack {
 }
 ```
 
-We can deploy... but this code has a lot of issues. The first is that everytime we deploy the code it will upload the react website to the bucket and this is not necessary because we just need to deploy the website after change it...  and if for some reason we don't have the build folder, the deploy will fail.
+We can deploy… but this code has a lot of issues. First is that every time we deploy the code it will upload the react website to the bucket and this is not necessary, we just need to deploy the website after making some change on it… and if for some reason we don't have the build folder, the deploy will fail.
 
-Other problem is if the API Endpoint changes after the deploy, the website will stop work and to fix we will need to change the API Endpoint inside the code, build, and then deploy everything again!
+Another problem is if the API Endpoint changes after the deploy, the website will stop work, and to fix we will need to change the API Endpoint inside the code, build the react, and then deploy everything again!
 
-How we can fix it? We can split into two stacks, one for the backend and other for the frontend.
+How we can fix it? We can split into two stacks, one for the backend and another for the frontend.
 
-Delete everything inside `lib/`, we don't need it anymore. You can also stop the `npm run watch` for now, because for sure will show a lot of errors.
+Delete everything inside `lib/`, we don't need it anymore. We can also stop the `npm run watch` for now, because for sure will show a lot of errors.
 
 Then create the file `lib/dragons-backend-stack.ts`:
 
@@ -143,7 +146,7 @@ export class DragonsBackendStack extends cdk.Stack {
 
 ```
 
-And create `lib/dragons-frontend-stack.ts`
+And `lib/dragons-frontend-stack.ts`
 
 ```
 import * as cdk from '@aws-cdk/core';
@@ -174,7 +177,7 @@ new DragonsFrontendStack(app, 'DragonsFrontendStack');
 
 ```
 
-And to avoid TS errors, change `test/dragonspage.test.ts` -> *Will make some tests in the future, not now.*
+To avoid TS errors, change `test/dragonspage.test.ts` -> *Will make some tests in the future, not now.*
 
 ```
 import { expect as expectCDK, matchTemplate, MatchStyle } from '@aws-cdk/assert';
@@ -205,7 +208,7 @@ Since this app includes more than a single stack, specify which stacks to use (w
 Stacks: DragonsBackendStack DragonsFrontendStack
 ```
 
-so run `cdk deploy DragonsBackendStack` to create the DynamoDB, lambdas and API Endpoint... remember to save the API Endpoint.
+Run `cdk deploy DragonsBackendStack` to create the DynamoDB, lambdas, and API Endpoint... remember to save the API Endpoint.
 
 Add the two initial dragons again to test the frontend:
 
@@ -213,11 +216,11 @@ Add Dragon 1: `curl --header "Content-Type: application/json" --request POST --d
 
 Add Dragon 2: `curl --header "Content-Type: application/json" --request POST --data @data/dragon2.json <URL_ENDPOINT>`
 
-Open `frontend/src/App.tsx` and change `const apiEndpoint` then in `frontend/` run `npm run build` to create the files to be send to the S3 again.
+Open `frontend/src/App.tsx` and change `const apiEndpoint` , then in `frontend/` run `npm run build` to create the files to be sent to the S3 again.
 
 `cdk deploy DragonsFrontendStack` will create the S3 bucket and send the files, the output will be the website URL. Open in the browser to test if everything is ok. Should be.
 
-Ok, now we can start to think again in the task that we need to do, create multiple DynamoDB tables. The code we  have to create the tables is pretty simple:
+Ok, now we can start to think again in the task that we have to do, create multiple DynamoDB tables. The code we have is pretty simple:
 
 ```
 const dragonsTable = new dynamodb.Table(this, 'dragons', {
@@ -227,9 +230,9 @@ const dragonsTable = new dynamodb.Table(this, 'dragons', {
 });
 ```
 
-And we can be tempted just to copy and modify to create four tables that we need, but this is not a cool stuff to be done. Insteed we will create a JSON with the Table data.
+We can be tempted to just copy and modify and then create the four tables we need, but this is not cool to be done. Instead, we will create a JSON with the Table data.
 
-Mary already sent to you the JSON files with the data of each table, you can find here: https://github.com/gugazimmermann/dragonspage/tree/part-2/data - copy the files `dragon_bonus_attack.json`, `dragon_current_power.json`, `dragon_family.json`, and `dragon_stats.json` to `data/` inside the local project. After take a look at the file we decide that the tables will be like this:
+Mary already sent to us the JSON files with the data for each table, you can find here: https://github.com/gugazimmermann/dragonspage/tree/part-2/data - copy the files `dragon_bonus_attack.json`, `dragon_current_power.json`, `dragon_family.json`, and `dragon_stats.json` to `data/` inside the local project. After taking a look at the files we decide that the tables will be like this:
 
 | Table                | Primary Key   | Sort Key |
 | -------------------- | ------------- | -------- |
@@ -238,7 +241,7 @@ Mary already sent to you the JSON files with the data of each table, you can fin
 | dragon_bonus_attack  | breath_attack | range    |
 | dragon_family        | family        |          |
 
-Now that we know how the tables will be created just put it in a JSON inside `data/tables.json`:
+We know how the tables will be created, so let's just put it in a JSON inside `data/tables.json`:
 
 ```
 [
@@ -277,14 +280,14 @@ Now that we know how the tables will be created just put it in a JSON inside `da
 ]
 ```
 
-TypeScript will show a error when we try to import the JSON, to solve it add inside `tsconfig.json` right after *"typeRoots": ["./node_modules/@types"],* 
+TypeScript will show an error when we try to import the JSON, to solve it add inside `tsconfig.json` right after *"typeRoots": ["./node_modules/@types"],*
 
 ```
 "moduleResolution": "node",
 "resolveJsonModule": true
 ```
 
-And we can load the json data to create the tables, lambda and API in `lib/dragons-backend.ts`:
+And we can load the JSON data to create the tables, lambda, and API in `lib/dragons-backend.ts`:
 
 ```
 import * as cdk from '@aws-cdk/core';
@@ -350,9 +353,7 @@ export class DragonsBackend extends cdk.Construct {
 
 ```
 
-We know that for now we only need the lambda to get data from `dragon_stats`, so we will just create API Endpoint and Lambda for this table, and just to GetOne and GetAll.
-
-Open `src/lambda/dragonsHandler.ts`:
+We know that for now the site only needs a lambda to get data from dragon_stats, so we will just create API Endpoint and Lambda for this table, and just GetOne and GetAll. Open `src/lambda/dragonsHandler.ts`:
 
 ```
 import AWS = require('aws-sdk');
@@ -409,7 +410,7 @@ exports.handler = async function (event: AWSLambda.APIGatewayEvent) {
 
 ```
 
-And since we are in the `src/` folder, go to `src/interfaces/dragon.ts` and change to be in the same format that we have now in dragon_stats table:
+And since we are in the `src/` folder, go to `src/interfaces/dragon.ts` and change to be in the same format that we have now in *dragon_stats* table:
 
 ```
 export interface IDragon {
@@ -426,14 +427,14 @@ export interface IDragon {
 
 ```
 
-Now runnig `cdk deploy DragonsBackendStack` we will have four endpoints, like this:
+Running `cdk deploy DragonsBackendStack` we will see something like this:
 
 ```
 Outputs:
 DragonsBackendStack.DragonsBackenddragonstatsendpointEndpointA1B2C3D4 = <API_ENDPOINT>
 ```
 
-It's a good moment to use another tool, the **AWS-CLI** (https://docs.aws.amazon.com/cli/latest/userguide/install-cliv2-linux.html#cliv2-linux-install) to help us running some code commands in the terminar (don't need to write a script), so let's run  `aws dynamodb  list-tables` and see the tables:
+It's a good moment to use another tool, the **AWS-CLI** (https://docs.aws.amazon.com/cli/latest/userguide/install-cliv2-linux.html#cliv2-linux-install) to help us running some code commands in the terminal (don't need to write a script), so let's run `aws dynamodb list-tables` and see the tables:
 
 ```
 {
@@ -467,13 +468,11 @@ And `aws apigateway get-rest-apis` to see the API
 
 But we can't see the API Endpoint? Well, we can, but we need to format it: `https://<RESTAPI_ID>.execute-api.<REGION>.amazonaws.com/<STAGE>/` = https://A1B2C3D4E5.execute-api.us-east-1.amazonaws.com/prod/
 
-If you forgot what region you are using just run `aws configure get region` and the <STAGE> in this exercise is always `prod`.
+If you forgot what region you are using just `run aws configure get region` and the stage in this exercise is always *prod*.
 
-*Tip: if you want to save the output, run `aws apigateway get-rest-apis > rest-apis.json`, this will save the optput in the json file `rest-apis.json`.* 
+*Tip: if you want to save the output, run `aws apigateway get-rest-apis > rest-apis.json`, this will save the output in the JSON file `rest-apis.json`.* 
 
-Now we need to seed the Items into the tables, a one time job, so we dont need it inside the CDK stack, we can use the CLI. First we need to prepare the data to be sent.
-
-To use the `batch_write_item` we need to create a JSON with this format:
+Now we need to seed the Items into the tables, a one time job, so it doesn't need to be inside the CDK stack, we can use the CLI. So let's prepare the data to be sent, to use `batch_write_item` we need to create a JSON with this format:
 
 ```
 {
@@ -489,12 +488,12 @@ To use the `batch_write_item` we need to create a JSON with this format:
 }
 ```
 
-You can do it manually inside `data/data_all.json` or copy from here https://github.com/gugazimmermann/dragonspage/tree/part-2/data/data_all.json
+Do it manually inside `data/data_all.json` or copy from here https://github.com/gugazimmermann/dragonspage/tree/part-2/data/data_all.json.
 
-We have now other problem, BATCH WRITE CAN'T HAVE MORE THAN 25 ITEMS! You are pissed off, because you have a lot of work to format all the data into the right format and now you will need to count and slipt all! You think about ask Mary next time send to you in the right format... but no, insted we can create a simple script to automate it. 
-(https://docs.aws.amazon.com/cli/latest/reference/dynamodb/batch-write-item.html)
+We now have another problem, BATCH WRITE CAN'T HAVE MORE THAN 25 ITEMS! You are pissed off because you have a lot of work to format all the data into the right format and now you will need to count and slipt all! You think about asking Mary next time to send it to you in the right format… but no, instead we can create a simple script to automate it.
+See more here (https://docs.aws.amazon.com/cli/latest/reference/dynamodb/batch-write-item.html)
 
-Create `data/create_data.js` and add *data/*.js* inside `.eslintignore`. Now inside `data/create_data.js` add the script to get the tables and transform the data into the right format.
+Create `data/create_data.js` and add **data/*.js** inside `.eslintignore`. Now inside `data/create_data.js` add the script to get the tables and transform the data into the right format.
 
 ```
 const tables = require('./tables.json');
@@ -516,11 +515,12 @@ for (let table of tables) {
 console.log(JSON.stringify(finalData, undefined, 2));
 
 ```
-and just run inside `data/` `node create_data.js > data_to_seed.json`, if you open `data/data_to_seed.json` you will see the data in the right format.
 
-To batch write the data we will use the AWS-SDK, that was installed before in Part-1, so you already have it. Create the file  `data/seed_data.js`.
+And just run inside `data/` `node create_data.js > data_to_seed.json`, if you open `data/data_to_seed.json` you will see the data in the right format.
 
-(remeber `aws configure get region`? Use it to see the region and change inside the code)
+To batch write the data we will use the AWS-SDK, that was installed before in Part-1, so you already have it. Create the file `data/seed_data.js`.
+
+(remember `aws configure get region`? Use it to see the region and change inside the code)
 
 ```
 const AWS = require('aws-sdk');
@@ -569,9 +569,7 @@ Run `node seed_data.js` and let's see if it worked, `curl <API_ENDPOINT>` must r
 
 ## Frontend
 
-We have a lot of dragons to show, so let's try to show to Mary a better looking website.
-
-Move to `frontend/` and remove Bootstrap, we dont want it anymore `npm uninstall bootstrap react-bootstrap`, now install Material-UI `npm install @material-ui/core @material-ui/lab`.
+We have a lot of dragons to show, so let's try to show to Mary a better-looking website. Move to `frontend/` and remove Bootstrap, we don't want it anymore `npm uninstall bootstrap react-bootstrap`, now install Material-UI `npm install @material-ui/core @material-ui/lab`.
 
 Open `frontend/public/index.html` and replace the line *<title>* with these two lines:
 
@@ -736,7 +734,7 @@ export default App;
 
 ```
 
-And create the component `frontend/src/Dragon.tsx`
+And create the component `frontend/src/Dragon.tsx`.
 
 ``` 
 import React from 'react';
@@ -822,29 +820,29 @@ export default Dragon;
 
 Build the React Site `npm run build`, go back to `./` and run `cdk deploy DragonsFrontendStack` to deploy the website.
 
-And that's it for now, we can email the link so Mary can see and send more instructions. :)
+And that's it for now, we can email the link so Mary can see and send more instructions. :)
 
 
 # Bonus - Custom Domain
 
 
-We decided to use a custom domain to not have to change the API Endpoint and Site URL everytime that for some reason we need to destroy and create the Stack again.
+We decided to use a custom domain to not have to change the API Endpoint and Site URL every time that for some reason we need to destroy and create the Stack again.
 
-A domain hosted inside AWS Route 53 is needed, I already have one, but if you don't have there's no problem skip this part of the exercice and use the generated. If you want to register a domain, go to https://console.aws.amazon.com/route53/home#DomainRegistration:
+A domain hosted inside AWS Route 53 is needed, I already have one, but if you don't have one, there's no problem skip this part of the exercise and use the generated by CDK. If you want to register a domain, go to https://console.aws.amazon.com/route53/home#DomainRegistration
 
-First we need to install some dependencies needed: `npm install @aws-cdk/aws-route53 @aws-cdk/aws-route53-targets @aws-cdk/aws-certificatemanager @aws-cdk/aws-cloudfront` ... and this simple step can become trick and start to return a lot of errors when you trun `npm run watch`. The reason is because the version of the modules can be different from `@aws-cdk/core` - For me when writing this exercice the version of Core as 1.54.0 and the new modules was 1.55.0 ... but we can solve it running `npx npm-check-updates -u` to update all the dependencies, and then `npm install` to install again, and is a good thing close and re-open VSCode.
+First, we need to install some dependencies: `npm install @aws-cdk/aws-route53 @aws-cdk/aws-route53-targets @aws-cdk/aws-certificatemanager @aws-cdk/aws-cloudfront` ... and this simple step can become trick and start to return a lot of errors when you run `npm run watch`. The reason is that the version of the modules can be different from `@aws-cdk/core` - For me when writing this exercise the version of Core was 1.54.0 and the new modules 1.55.0 ... but we can solve it running `npx npm-check-updates -u` to update all the dependencies, then `npm install` again, and is a good thing close and re-open VSCode.
 
-Other problem that I faced was the region, all the exercice I was using `us-east-2`, but to generate the certificate need to be in `us-east-1`. So  you  can destroy the stacks inside other region, change the region inside `~/.aws/config` to be `us-east-1`.
+Another problem that I faced was the region, all the exercise I was using `us-east-2`, but to generate the certificate I received a message that needs to be in `us-east-1`. So you can destroy the stacks and change the region inside `~/.aws/config` to be `us-east-1`.
 
-If during the exercice you need to destroy the Stacks and start again we may see error in the CloudFormation, this can be because some resources inside Route 53, DynamoDB Domain, CloudFront, and others, fail to delete and you will need to open the console `https://console.aws.amazon.com/` search the error you saw in terminal and deleted manually. You may need to delete the CloudFormation too or run destroy again.
+If during the exercise you need to destroy the Stacks and start again we may see an error in the CloudFormation, this can be because some resources inside Route 53, DynamoDB Domain, CloudFront, and others, fail to delete and you will need to open the console https://console.aws.amazon.com/ search the error you saw in the terminal and deleted manually. You may need to delete the CloudFormation too or run destroy again.
 
-Since now we will use the same bucket everytime, CloudFormation can be stucked for a long time if you delete the bucket  (in a destroy) and try to create right after... buckets have unique names globally, and AWS will protect the names for a period of time.
+Since now we will use the same bucket every time, CloudFormation can be stuck for a long time if you delete the bucket (in a destroy) and try to create right after… buckets have unique names globally, and AWS will protect the names for a while.
 
 The first time you try to deploy probably will see a warning about cdk bootstrap, no worries, just run `cdk bootstrap`.
 
-Well... I think that is it, and have this problems is good to understand better the AWS resources and figure out how to solve.
+Well… I think that is it, and have these problems is good to understand better the AWS resources and figure out how to solve them.
 
-Ok, now we have the dependencies, let's start... We decided what domain to use, `pocz.io`  (for you, of course, will be another), the site will run in `wwww.pocz.io` and the API in `api.pocz.io`. So we need to pass this info inside `./cdk.json`
+Ok, now we have the dependencies, let's start… We decided what domain to use, `pocz.io` (for you, of course, will be another), the site will run in `wwww.pocz.io` and the API in `api.pocz.io`. So we need to pass this info inside `./cdk.json`.
 
 ```
 {
@@ -859,7 +857,7 @@ Ok, now we have the dependencies, let's start... We decided what domain to use, 
 }
 ```
 
-Now in `bin/dragonspage.ts` we need to pass your account and region as environment to the stack, take the oportunity and pass to backend and frontend so we don't need to do it latter.
+In `bin/dragonspage.ts` we need to pass your account and region as an environment to the stack, take the opportunity and pass to backend and frontend so we don't need to do it later.
 
 ```
 #!/usr/bin/env node
@@ -884,7 +882,7 @@ new DragonsFrontendStack(app, 'DragonsFrontendStack', {
 
 ```
 
-in `lib/dragons-backend-stack.ts` we will pass the CDK context to the Construct.
+Inside `lib/dragons-backend-stack.ts` we will pass the CDK context to the Construct.
 
 ```
 import * as cdk from '@aws-cdk/core';
@@ -903,9 +901,9 @@ export class DragonsBackendStack extends cdk.Stack {
 
 ```
 
-Finally in `lib/dragons-backend.ts` we can start to really work. 
+Finally in `lib/dragons-backend.ts` we can start to work.
 
-First we need to receive the CDK context as props, but we need a Interface for Typescript, with this information when can get the Route 53 hosted zone and create the full API URL. We need a certificate, create the API Domain and attach this certificate, and add a Base Path for the API... this is important because we can use the same domain again for other APIs, so we will use  the table name as path to make it easy, the final URL will be `https://api.pocz.io/dragon_stats`...  and to complete we need to tell Route 53 that `api.pocz.io` exist.
+First, we need to receive the CDK context as props, but we need an Interface for Typescript, with this information when can get the Route 53 hosted zone and create the full API URL. We need a certificate, create the API Domain and attach this certificate, and add a Base Path for the API… this is important because we can use the same domain again for other APIs, so we will use the table name as a path to make it easy, the final URL will be `https://api.pocz.io/dragon_stats`... and to complete we need to tell Route 53 that `api.pocz.io` exist.
 
 ```
 import * as cdk from '@aws-cdk/core';
@@ -1003,11 +1001,11 @@ export class DragonsBackend extends cdk.Construct {
 
 ```
 
-After deploy you will need to wait for some time, and if you hit the endoint `curl https://api.pocz.io/dragon_stats` and see `[ ]` you know that need to end the data to dynamodb again.
+After deploy you will need to wait for some time, and if you hit the endpoint `curl https://api.pocz.io/dragon_stats` and see `[ ]` you know that need to send the data to DynamoDB again.
 
-Now the frontend, first go to `frontend/src/App.tsx` and change the API Endpoint `const apiEndpoint = 'https://api.pocz.io/dragon_stats';` to not forget it latter. We can also run `npm run build` to re-create the React Website.
+Now the frontend, first open `frontend/src/App.tsx` and change the API Endpoint `const apiEndpoint = 'https://api.pocz.io/dragon_stats';` to not forget to do it later. We can also run `npm run build` to re-create the React Website.
 
-To start change the Frontend we need to pass the CDK context too (`lib/dragons-frontend-stack.ts`)
+Start the changes in the Frontend passing the CDK context in `lib/dragons-frontend-stack.ts`
 
 ```
 import * as cdk from '@aws-cdk/core';
@@ -1026,7 +1024,7 @@ export class DragonsFrontendStack extends cdk.Stack {
 
 ```
 
-And in `lib/dragons-frontend.ts` receive the CDK context as props, create the TS Interface, get the Route 53 hosted zone and create the site URL. We will add a name to the bucket, so it will not change every time, create a certificate to the domain (so this can be a https and not how security warnings), a CloudFront to do the distribution of the website content, and in the end tell Route 53 that `www.pocz.io` exists.
+In `lib/dragons-frontend.ts` receive the CDK context as props, create the TS Interface, get the Route 53 hosted zone, and create the site URL. We will add a name to the bucket, so it will not change every time, create a certificate to the domain (so this can be an https and not throw security warnings), a CloudFront to do the distribution of the website content, and in the end tell Route 53 that `www.pocz.io` exists.
 
 ```
 import * as cdk from '@aws-cdk/core';
@@ -1112,4 +1110,4 @@ RUNNING CODE: https://www.pocz.io/
 
 LINKEDIN: 
 
-**DRAGONS PAGE** changes the exercices of the course **Amazon DynamoDB: Building NoSQL Database-Driven Applications**  https://www.coursera.org/learn/dynamodb-nosql-database-driven-apps/home/welcome to be done using the AWS CDK. Thanks to Seph Robinson, Morgan Willis and Rick H for the course. (I also recommend the specialization AWS Fundamentals: Going Cloud-Native that I did before.)
+**DRAGONS PAGE** changes the exercises of the course **Amazon DynamoDB: Building NoSQL Database-Driven Applications** https://www.coursera.org/learn/dynamodb-nosql-database-driven-apps/home/welcome to be done using the AWS CDK. Thanks to Seph Robinson, Morgan Willis, and Rick H for the course. (I also recommend the specialization AWS Fundamentals: Going Cloud-Native that I did before.)
