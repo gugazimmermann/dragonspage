@@ -2,7 +2,7 @@
 
 ## WebSite using DynamoDB created with AWS-CDK
 
-RUNNING CODE: http://dragonsfrontendstack-dragonsfrontenddrangonswebsi-n3f1sj7fqmpy.s3-website.us-east-2.amazonaws.com/
+RUNNING CODE: https://www.pocz.io/
 
 LINKEDIN: 
 
@@ -829,7 +829,7 @@ To not keep the resources inside AWS (and not pay for it), we can destroy the Cl
 
 # DRAGONS PAGE
 
-RUNNING CODE: http://dragonsfrontendstack-dragonsfrontenddrangonswebsi-n3f1sj7fqmpy.s3-website.us-east-2.amazonaws.com/
+RUNNING CODE: https://www.pocz.io/
 
 LINKEDIN: 
 
