@@ -17,4 +17,4 @@ LINKEDIN: https://www.linkedin.com/in/guga-zimmermann/ - Look for Articles by Jo
 
 ## Part 2
 
-[Article 2](article.md)
+[Article 2](article2.md)
