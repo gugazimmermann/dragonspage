@@ -4,7 +4,7 @@
 
 > In this part we will continue Part 1, creating more tables, adding a lot of data, show all the dragons on the website, search for just the one that we need, and see how to solve a lot of issues that can appear during the development.
 
-> In the end, we will have a Bonus part, to show to do use a custom URL for the website and API endpoint.
+> In the end, we will have a Bonus part, to show how to use a custom URL for the website and API endpoint.
 
 RUNNING CODE: https://www.pocz.io/
 
