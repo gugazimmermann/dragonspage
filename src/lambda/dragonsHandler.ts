@@ -1,10 +1,13 @@
 import AWS = require('aws-sdk');
-import { IDragon } from '../interfaces/dragon';
 
 const tableName = process.env.TABLE_NAME || '';
+const PK = process.env.PK || '';
 const dynamo = new AWS.DynamoDB.DocumentClient();
 
-const createResponse = (body: string | AWS.DynamoDB.DocumentClient.ItemList, statusCode = 200) => {
+const createResponse = (
+  body: string | [AWS.DynamoDB.DocumentClient.AttributeMap | undefined] | AWS.DynamoDB.DocumentClient.ItemList,
+  statusCode = 200,
+) => {
   return {
     statusCode,
     headers: {
@@ -15,55 +18,31 @@ const createResponse = (body: string | AWS.DynamoDB.DocumentClient.ItemList, sta
   };
 };
 
-const getAllDragons = async () => {
-  const scanResult = await dynamo.scan({ TableName: tableName }).promise();
-  return scanResult;
+const getOne = async (pathParameters: { [x: string]: string }) => {
+  const value = pathParameters.proxy;
+  const primaryKey = JSON.parse(PK);
+  const params = { TableName: tableName, Key: { [primaryKey.name]: value } };
+  return await dynamo.get(params).promise();
 };
 
-const addDragonItem = async (data: IDragon) => {
-  if (data) await dynamo.put({ TableName: tableName, Item: data }).promise();
-  return data;
-};
-
-const deleteDragonItem = async (data: { dragon_name: string }) => {
-  const { dragon_name } = data;
-  if (dragon_name) await dynamo.delete({ TableName: tableName, Key: { dragon_name } }).promise();
-  return dragon_name;
+const getAll = async () => {
+  return await dynamo.scan({ TableName: tableName }).promise();
 };
 
 exports.handler = async function (event: AWSLambda.APIGatewayEvent) {
   try {
-    const { httpMethod, body: requestBody } = event;
-
+    const { httpMethod, pathParameters } = event;
     if (httpMethod === 'OPTIONS') {
       return createResponse('Ok');
     }
-
     if (httpMethod === 'GET') {
-      const response = await getAllDragons();
-      return createResponse(response.Items || []);
+      if (!pathParameters) {
+        const response = await getAll();
+        return createResponse(response.Items || []);
+      }
+      const response = await getOne(pathParameters);
+      return createResponse([response.Item] || []);
     }
-
-    if (!requestBody) {
-      return createResponse('Missing request body', 500);
-    }
-
-    const data = JSON.parse(requestBody);
-
-    if (httpMethod === 'POST') {
-      const dragon = await addDragonItem(data);
-      return dragon
-        ? createResponse(`${JSON.stringify(data)} added to the database`)
-        : createResponse('Dragon is missing', 500);
-    }
-
-    if (httpMethod === 'DELETE') {
-      const dragon = await deleteDragonItem(data);
-      return dragon
-        ? createResponse(`${JSON.stringify(data)} deleted from the database`)
-        : createResponse('Dragon is missing', 500);
-    }
-
     return createResponse(`Ops, something wrong!`, 500);
   } catch (error) {
     console.log(error);

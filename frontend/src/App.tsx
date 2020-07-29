@@ -1,70 +1,105 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import Jumbotron from 'react-bootstrap/Jumbotron';
-import Container from 'react-bootstrap/Container';
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
-import Form from 'react-bootstrap/Form';
-import Alert from 'react-bootstrap/Alert';
-import Card from 'react-bootstrap/Card';
-import Table from 'react-bootstrap/Table';
+import AppBar from '@material-ui/core/AppBar';
+import Grid from '@material-ui/core/Grid';
+import Toolbar from '@material-ui/core/Toolbar';
+import Alert from '@material-ui/lab/Alert';
+import Typography from '@material-ui/core/Typography';
+import Container from '@material-ui/core/Container';
+import { makeStyles } from '@material-ui/core/styles';
+import Dragon from './Dragon';
 import { IDragon } from '../../src/interfaces/dragon';
 
+const useStyles = makeStyles((theme) => ({
+  heroContent: {
+    backgroundColor: theme.palette.background.paper,
+    padding: theme.spacing(4, 0, 2),
+  },
+  heroButtons: {
+    marginTop: theme.spacing(2),
+  },
+  select: {
+    padding: theme.spacing(2),
+  },
+  cardGrid: {
+    paddingTop: theme.spacing(4),
+    paddingBottom: theme.spacing(4),
+  },
+}));
+
 function App() {
-  const apiEndpoint = 'https://dq2w4s564i.execute-api.us-east-2.amazonaws.com/prod';
+  const apiEndpoint = 'https://u65pv3apkc.execute-api.us-east-2.amazonaws.com/prod';
+  const pageTitle = 'Dragons Page';
+
   const [dragons, setDragons] = useState<Array<IDragon>>([]);
+  const [dragonsNames, setDragonsNames] = useState<Array<IDragon>>([]);
   const [error, setError] = useState<{ message: string } | null>(null);
+  const [selectDragon, setSelectDragon] = useState<string>('');
+  const classes = useStyles();
 
   useEffect(() => {
     axios
       .get(apiEndpoint)
-      .then(({ data }) => {
-        setDragons(data);
-      })
-      .catch((err) => {
-        setError({ message: 'API ERROR' });
-      });
+      .then(({ data }) => setDragonsNames(data))
+      .catch(() => setError({ message: 'API ERROR' }));
   }, []);
 
+  useEffect(() => {
+    axios
+      .get(`${apiEndpoint}/${selectDragon}`)
+      .then(({ data }) => setDragons(data))
+      .catch(() => setError({ message: 'API ERROR' }));
+  }, [selectDragon]);
+
   return (
-    <Container fluid className="p-3">
-      <Jumbotron>
-        <h1 className="header text-center">Welcome to Dragons Page</h1>
-      </Jumbotron>
-      <Form.Control as="select">
-        <option>All</option>
-        <option>...</option>
-      </Form.Control>
-      <br />
-      {error && <Alert variant="danger">{error.message}</Alert>}
-      <Row>
-        {dragons &&
-          dragons.map((dragon, i) => (
-            <Col key={i} xs="4">
-              <Card>
-                <Card.Title className="mt-2 font-weight-bold text-center">{dragon.dragon_name}</Card.Title>
-                <Card.Subtitle className="mb-2 text-muted text-center">{dragon.dragon_type}</Card.Subtitle>
-                <Table striped bordered hover className="mb-0">
-                  <thead>
-                    <tr>
-                      <th>Description</th>
-                      <th className="text-center">Att</th>
-                      <th className="text-center">Def</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <td>{dragon.description}</td>
-                      <td className="text-center">{dragon.attack}</td>
-                      <td className="text-center">{dragon.defense}</td>
-                    </tr>
-                  </tbody>
-                </Table>
-                <Card.Img variant="top" src={`${dragon.dragon_name}.png`} />
-              </Card>
-            </Col>
-          ))}
-      </Row>
+    <Container maxWidth="md">
+      <AppBar position="relative">
+        <Toolbar>
+          <Typography variant="h6" color="inherit" noWrap>
+            {pageTitle}
+          </Typography>
+        </Toolbar>
+      </AppBar>
+      <main>
+        <div className={classes.heroContent}>
+          <Container maxWidth="sm">
+            <Typography component="h1" variant="h4" align="center" color="textPrimary" gutterBottom>
+              Welcome to the {pageTitle}
+            </Typography>
+            <Typography variant="h5" align="center" color="textSecondary" paragraph>
+              Please, Choose the dragon card!
+            </Typography>
+            <div className={classes.heroButtons}>
+              <Grid container spacing={2} justify="center">
+                <Grid item>
+                  <select
+                  className={classes.select}
+                   value={selectDragon}
+                   onChange={(e) => setSelectDragon(e.target.value)}
+                  >
+                    <option value={''} label={'All'} />
+                    {dragonsNames.map((dragon, i) => (
+                      <option key={i} value={dragon.dragon_name} label={dragon.dragon_name} />
+                    ))}
+                  </select>
+                </Grid>
+              </Grid>
+            </div>
+          </Container>
+        </div>
+        <Container className={classes.cardGrid}>
+          {error && (
+            <Alert variant="filled" severity="error">
+              Error to receive data from API!
+            </Alert>
+          )}
+          <Grid container spacing={4}>
+            {dragons.map((dragon, i) => (
+              <Dragon key={i} dragon={dragon} />
+            ))}
+          </Grid>
+        </Container>
+      </main>
     </Container>
   );
 }
