@@ -5,6 +5,9 @@ export class DragonsFrontendStack extends cdk.Stack {
   constructor(scope: cdk.Construct, id: string, props?: cdk.StackProps) {
     super(scope, id, props);
 
-    new DragonsFrontend(this, 'DragonsFrontend');
+    new DragonsFrontend(this, 'DragonsFrontend', {
+      domainName: this.node.tryGetContext('domain'),
+      siteSubDomain: this.node.tryGetContext('subdomain'),
+    });
   }
 }

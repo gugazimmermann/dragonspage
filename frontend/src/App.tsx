@@ -28,7 +28,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function App() {
-  const apiEndpoint = 'https://u65pv3apkc.execute-api.us-east-2.amazonaws.com/prod';
+  const apiEndpoint = 'https://api.pocz.io/dragon_stats';
   const pageTitle = 'Dragons Page';
 
   const [dragons, setDragons] = useState<Array<IDragon>>([]);

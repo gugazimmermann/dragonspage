@@ -2,7 +2,7 @@
 
 ## WebSite using DynamoDB created with AWS-CDK
 
-RUNNING CODE: http://dragonsfrontendstack-dragonsfrontenddrangonswebsi-n3f1sj7fqmpy.s3-website.us-east-2.amazonaws.com/
+RUNNING CODE: https://www.pocz.io/
 
 LINKEDIN: 
 
@@ -465,7 +465,7 @@ And `aws apigateway get-rest-apis` to see the API
   ...
 ```
 
-But we can't see the API Endpoint? Well, we can, but we need to format it: `https://<RESTAPI_ID>.execute-api.<REGION>.amazonaws.com/<STAGE>/` = https://A1B2C3D4E5.execute-api.us-east-2.amazonaws.com/prod/
+But we can't see the API Endpoint? Well, we can, but we need to format it: `https://<RESTAPI_ID>.execute-api.<REGION>.amazonaws.com/<STAGE>/` = https://A1B2C3D4E5.execute-api.us-east-1.amazonaws.com/prod/
 
 If you forgot what region you are using just run `aws configure get region` and the <STAGE> in this exercise is always `prod`.
 
@@ -824,12 +824,291 @@ Build the React Site `npm run build`, go back to `./` and run `cdk deploy Dragon
 
 And that's it for now, we can email the link so Mary can see and send more instructions. :)
 
+
+# Bonus - Custom Domain
+
+
+We decided to use a custom domain to not have to change the API Endpoint and Site URL everytime that for some reason we need to destroy and create the Stack again.
+
+A domain hosted inside AWS Route 53 is needed, I already have one, but if you don't have there's no problem skip this part of the exercice and use the generated. If you want to register a domain, go to https://console.aws.amazon.com/route53/home#DomainRegistration:
+
+First we need to install some dependencies needed: `npm install @aws-cdk/aws-route53 @aws-cdk/aws-route53-targets @aws-cdk/aws-certificatemanager @aws-cdk/aws-cloudfront` ... and this simple step can become trick and start to return a lot of errors when you trun `npm run watch`. The reason is because the version of the modules can be different from `@aws-cdk/core` - For me when writing this exercice the version of Core as 1.54.0 and the new modules was 1.55.0 ... but we can solve it running `npx npm-check-updates -u` to update all the dependencies, and then `npm install` to install again, and is a good thing close and re-open VSCode.
+
+Other problem that I faced was the region, all the exercice I was using `us-east-2`, but to generate the certificate need to be in `us-east-1`. So  you  can destroy the stacks inside other region, change the region inside `~/.aws/config` to be `us-east-1`.
+
+If during the exercice you need to destroy the Stacks and start again we may see error in the CloudFormation, this can be because some resources inside Route 53, DynamoDB Domain, CloudFront, and others, fail to delete and you will need to open the console `https://console.aws.amazon.com/` search the error you saw in terminal and deleted manually. You may need to delete the CloudFormation too or run destroy again.
+
+Since now we will use the same bucket everytime, CloudFormation can be stucked for a long time if you delete the bucket  (in a destroy) and try to create right after... buckets have unique names globally, and AWS will protect the names for a period of time.
+
+The first time you try to deploy probably will see a warning about cdk bootstrap, no worries, just run `cdk bootstrap`.
+
+Well... I think that is it, and have this problems is good to understand better the AWS resources and figure out how to solve.
+
+Ok, now we have the dependencies, let's start... We decided what domain to use, `pocz.io`  (for you, of course, will be another), the site will run in `wwww.pocz.io` and the API in `api.pocz.io`. So we need to pass this info inside `./cdk.json`
+
+```
+{
+    "app": "npx ts-node bin/dragonspage.ts",
+    "context": {
+        "@aws-cdk/core:enableStackNameDuplicates": "true",
+        "aws-cdk:enableDiffNoFail": "true",
+        "domain": "pocz.io",
+        "subdomain": "www",
+        "apisubdomain": "api"
+    }
+}
+```
+
+Now in `bin/dragonspage.ts` we need to pass your account and region as environment to the stack, take the oportunity and pass to backend and frontend so we don't need to do it latter.
+
+```
+#!/usr/bin/env node
+import 'source-map-support/register';
+import * as cdk from '@aws-cdk/core';
+import { DragonsBackendStack } from '../lib/dragons-backend-stack';
+import { DragonsFrontendStack } from '../lib/dragons-frontend-stack';
+
+const app = new cdk.App();
+new DragonsBackendStack(app, 'DragonsBackendStack', {
+  env: {
+    account: process.env.CDK_DEFAULT_ACCOUNT,
+    region: process.env.CDK_DEFAULT_REGION,
+  },
+});
+new DragonsFrontendStack(app, 'DragonsFrontendStack', {
+  env: {
+    account: process.env.CDK_DEFAULT_ACCOUNT,
+    region: process.env.CDK_DEFAULT_REGION,
+  },
+});
+
+```
+
+in `lib/dragons-backend-stack.ts` we will pass the CDK context to the Construct.
+
+```
+import * as cdk from '@aws-cdk/core';
+import { DragonsBackend } from './dragons-backend';
+
+export class DragonsBackendStack extends cdk.Stack {
+  constructor(scope: cdk.Construct, id: string, props?: cdk.StackProps) {
+    super(scope, id, props);
+
+    new DragonsBackend(this, 'DragonsBackend', {
+      domainName: this.node.tryGetContext('domain'),
+      apiSubDomain: this.node.tryGetContext('apisubdomain'),
+    });
+  }
+}
+
+```
+
+Finally in `lib/dragons-backend.ts` we can start to really work. 
+
+First we need to receive the CDK context as props, but we need a Interface for Typescript, with this information when can get the Route 53 hosted zone and create the full API URL. We need a certificate, create the API Domain and attach this certificate, and add a Base Path for the API... this is important because we can use the same domain again for other APIs, so we will use  the table name as path to make it easy, the final URL will be `https://api.pocz.io/dragon_stats`...  and to complete we need to tell Route 53 that `api.pocz.io` exist.
+
+```
+import * as cdk from '@aws-cdk/core';
+import * as dynamodb from '@aws-cdk/aws-dynamodb';
+import * as lambda from '@aws-cdk/aws-lambda';
+import * as apigateway from '@aws-cdk/aws-apigateway';
+import * as route53 from '@aws-cdk/aws-route53';
+import * as acm from '@aws-cdk/aws-certificatemanager';
+import * as tablesJson from '../data/tables.json';
+import * as targets from '@aws-cdk/aws-route53-targets/lib';
+
+export interface IStaticSiteProps {
+  domainName: string;
+  apiSubDomain: string;
+}
+export class DragonsBackend extends cdk.Construct {
+  public readonly handler: lambda.Function;
+
+  constructor(scope: cdk.Construct, id: string, props: IStaticSiteProps) {
+    super(scope, id);
+
+    const defaultTableParams: dynamodb.TableProps = {
+      partitionKey: { name: '', type: dynamodb.AttributeType.STRING },
+      billingMode: dynamodb.BillingMode.PAY_PER_REQUEST,
+      removalPolicy: cdk.RemovalPolicy.DESTROY,
+    };
+
+    const defaultLambdaParams: lambda.FunctionProps = {
+      code: lambda.Code.fromAsset('src/lambda'),
+      handler: 'dragonsHandler.handler',
+      runtime: lambda.Runtime.NODEJS_12_X,
+      memorySize: 256,
+      timeout: cdk.Duration.seconds(10),
+    };
+
+    for (const table of tablesJson) {
+      const { tableName, partitionKey, sortKey } = table;
+      const tableParams = { ...defaultTableParams, tableName };
+      tableParams.partitionKey = {
+        name: partitionKey.name,
+        type: partitionKey.type === 'S' ? dynamodb.AttributeType.STRING : dynamodb.AttributeType.NUMBER,
+      };
+      if (sortKey) {
+        tableParams.sortKey = {
+          name: sortKey.name,
+          type: sortKey.type === 'S' ? dynamodb.AttributeType.STRING : dynamodb.AttributeType.NUMBER,
+        };
+      }
+      const dragonsTable = new dynamodb.Table(this, tableName, tableParams);
+
+      if (tableName === 'dragon_stats') {
+        const dragonsHandler = new lambda.Function(this, `${tableName}_handler`, {
+          ...defaultLambdaParams,
+          functionName: `${dragonsTable.tableName}_handler`,
+          environment: {
+            TABLE_NAME: dragonsTable.tableName,
+            PK: JSON.stringify(partitionKey),
+            SK: JSON.stringify(sortKey),
+          },
+        });
+        dragonsTable.grantReadWriteData(dragonsHandler);
+
+        const zone = route53.HostedZone.fromLookup(this, 'Zone', { domainName: props.domainName });
+        const apiDomain = props.apiSubDomain + '.' + props.domainName;
+
+        const certificate = new acm.DnsValidatedCertificate(this, 'ApiCertificate', {
+          domainName: apiDomain,
+          hostedZone: zone,
+          region: process.env.CDK_DEFAULT_REGION,
+        });
+
+        const api = new apigateway.LambdaRestApi(this, `${tableName}_endpoint`, {
+          restApiName: `${tableName}_endpoint`,
+          handler: dragonsHandler,
+        });
+
+        const domain = new apigateway.DomainName(this, 'ApiDomain', {
+          domainName: apiDomain,
+          certificate: certificate,
+          endpointType: apigateway.EndpointType.EDGE,
+          securityPolicy: apigateway.SecurityPolicy.TLS_1_2,
+        });
+
+        domain.addBasePathMapping(api, { basePath: tableName });
+
+        new route53.ARecord(this, 'ApiDomainAliasRecord', {
+          recordName: apiDomain,
+          target: route53.RecordTarget.fromAlias(new targets.ApiGatewayDomain(domain)),
+          zone,
+        });
+      }
+    }
+  }
+}
+
+```
+
+After deploy you will need to wait for some time, and if you hit the endoint `curl https://api.pocz.io/dragon_stats` and see `[ ]` you know that need to end the data to dynamodb again.
+
+Now the frontend, first go to `frontend/src/App.tsx` and change the API Endpoint `const apiEndpoint = 'https://api.pocz.io/dragon_stats';` to not forget it latter. We can also run `npm run build` to re-create the React Website.
+
+To start change the Frontend we need to pass the CDK context too (`lib/dragons-frontend-stack.ts`)
+
+```
+import * as cdk from '@aws-cdk/core';
+import { DragonsFrontend } from './dragons-frontend';
+
+export class DragonsFrontendStack extends cdk.Stack {
+  constructor(scope: cdk.Construct, id: string, props?: cdk.StackProps) {
+    super(scope, id, props);
+
+    new DragonsFrontend(this, 'DragonsFrontend', {
+      domainName: this.node.tryGetContext('domain'),
+      siteSubDomain: this.node.tryGetContext('subdomain'),
+    });
+  }
+}
+
+```
+
+And in `lib/dragons-frontend.ts` receive the CDK context as props, create the TS Interface, get the Route 53 hosted zone and create the site URL. We will add a name to the bucket, so it will not change every time, create a certificate to the domain (so this can be a https and not how security warnings), a CloudFront to do the distribution of the website content, and in the end tell Route 53 that `www.pocz.io` exists.
+
+```
+import * as cdk from '@aws-cdk/core';
+import * as s3 from '@aws-cdk/aws-s3';
+import * as s3Deployment from '@aws-cdk/aws-s3-deployment';
+import * as route53 from '@aws-cdk/aws-route53';
+import * as acm from '@aws-cdk/aws-certificatemanager';
+import * as cloudfront from '@aws-cdk/aws-cloudfront';
+import * as targets from '@aws-cdk/aws-route53-targets/lib';
+
+export interface IStaticSiteProps {
+  domainName: string;
+  siteSubDomain: string;
+}
+export class DragonsFrontend extends cdk.Construct {
+  constructor(scope: cdk.Construct, id: string, props: IStaticSiteProps) {
+    super(scope, id);
+
+    const zone = route53.HostedZone.fromLookup(this, 'Zone', { domainName: props.domainName });
+    const siteDomain = props.siteSubDomain + '.' + props.domainName;
+
+    const siteBucket = new s3.Bucket(this, 'SiteBucket', {
+      bucketName: siteDomain,
+      publicReadAccess: true,
+      websiteIndexDocument: 'index.html',
+      websiteErrorDocument: 'error.html',
+      removalPolicy: cdk.RemovalPolicy.DESTROY,
+    });
+
+    const certificateArn = new acm.DnsValidatedCertificate(this, 'SiteCertificate', {
+      domainName: siteDomain,
+      hostedZone: zone,
+      region: process.env.CDK_DEFAULT_REGION,
+    }).certificateArn;
+
+    const distribution = new cloudfront.CloudFrontWebDistribution(this, 'SiteDistribution', {
+      aliasConfiguration: {
+        acmCertRef: certificateArn,
+        names: [siteDomain],
+        sslMethod: cloudfront.SSLMethod.SNI,
+        securityPolicy: cloudfront.SecurityPolicyProtocol.TLS_V1_1_2016,
+      },
+      originConfigs: [
+        {
+          s3OriginSource: {
+            s3BucketSource: siteBucket,
+          },
+          behaviors: [{ isDefaultBehavior: true }],
+        },
+      ],
+    });
+
+    new route53.ARecord(this, 'SiteAliasRecord', {
+      recordName: siteDomain,
+      target: route53.RecordTarget.fromAlias(new targets.CloudFrontTarget(distribution)),
+      zone,
+    });
+
+    new s3Deployment.BucketDeployment(this, 'DeploySite', {
+      sources: [s3Deployment.Source.asset('frontend/build')],
+      destinationBucket: siteBucket,
+      distribution,
+      distributionPaths: ['/*'],
+    });
+
+    new cdk.CfnOutput(this, 'Site', { value: 'https://' + siteDomain });
+  }
+}
+
+```
+
+Now you can deploy the frontend, open https://www.pocz.io and see the site running.
+
+
+#### The End!
+
 To not keep the resources inside AWS (and not pay for it), we can destroy the CloudFormation: `cdk destroy DragonsBackendStack DragonsFrontendStack`
 
 
 # DRAGONS PAGE
 
-RUNNING CODE: http://dragonsfrontendstack-dragonsfrontenddrangonswebsi-n3f1sj7fqmpy.s3-website.us-east-2.amazonaws.com/
+RUNNING CODE: https://www.pocz.io/
 
 LINKEDIN: 
 
