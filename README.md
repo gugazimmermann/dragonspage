@@ -13,8 +13,19 @@ LINKEDIN: https://www.linkedin.com/in/guga-zimmermann/ - Look for Articles by Jo
 
 ## Part 1
 
-[Article](article.md)
+[branch](https://github.com/gugazimmermann/dragonspage/tree/part-1)
+
+[Article](https://github.com/gugazimmermann/dragonspage/blob/part-1/article.md)
 
 ## Part 2
 
+[branch](https://github.com/gugazimmermann/dragonspage/tree/part-2)
+
 [Article 2](article2.md)
+
+
+## Part 2 - Custom URL
+
+[branch](https://github.com/gugazimmermann/dragonspage/tree/part-2-route-53)
+
+[Article 2](https://github.com/gugazimmermann/dragonspage/blob/part-2-route-53/article2.md)
