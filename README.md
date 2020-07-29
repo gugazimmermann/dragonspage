@@ -2,7 +2,7 @@
 
 ## WebSite using DynamoDB created with AWS-CDK
 
-RUNNING CODE: http://dragonsfrontendstack-dragonsfrontenddrangonswebsi-n3f1sj7fqmpy.s3-website.us-east-2.amazonaws.com/
+RUNNING CODE: https://www.pocz.io/
 
 LINKEDIN: https://www.linkedin.com/in/guga-zimmermann/ - Look for Articles by José Augusto
 
