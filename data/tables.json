@@ -1,0 +1,34 @@
+[
+  {
+    "tableName": "dragon_stats",
+    "partitionKey": {
+      "name": "dragon_name",
+      "type": "S"
+    }
+  },
+  {
+    "tableName": "dragon_current_power",
+    "partitionKey": {
+      "name": "game_id",
+      "type": "S"
+    }
+  },
+  {
+    "tableName": "dragon_bonus_attack",
+    "partitionKey": {
+      "name": "breath_attack",
+      "type": "S"
+    },
+    "sortKey": {
+      "name": "range",
+      "type": "N"
+    }
+  },
+  {
+    "tableName": "dragon_family",
+    "partitionKey": {
+      "name": "family",
+      "type": "S"
+    }
+  }
+]

@@ -1,0 +1,32 @@
+[
+    {
+        "breath_attack": "acid",
+        "description": "spews acid",
+        "extra_damage": 3,
+        "range": 5
+    },
+    {
+        "breath_attack": "electricty",
+        "description": "bolts fly from mouth",
+        "extra_damage": 3,
+        "range": 5
+    },
+    {
+        "breath_attack": "water",
+        "description": "hgh pressure jet over a large area",
+        "extra_damage": 1,
+        "range": 10
+    },
+    {
+        "breath_attack": "fear",
+        "description": "Prevent all attacks next round",
+        "extra_damage": 0,
+        "range": 4
+    },
+    {
+        "breath_attack": "fire",
+        "description": " Short blast of fire",
+        "extra_damage": 8,
+        "range": 4
+    }
+]

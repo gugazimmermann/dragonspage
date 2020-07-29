@@ -1,0 +1,906 @@
+{
+  "dragon_current_power": [
+    {
+      "PutRequest": {
+        "Item": {
+          "current_endurance": { "N": "3" },
+          "current_will_not_fight_credits": { "N": "2" },
+          "dragon_name": { "S": "Cassidiuma" },
+          "game_id": { "S": "56syjdh8756" }
+        }
+      }
+    }
+  ],
+  "dragon_family": [
+    {
+      "PutRequest": {
+        "Item": {
+          "breath_attack": { "S": "acid" },
+          "damage_modifier": { "N": "-2" },
+          "description": { "S": "Better defense" },
+          "family": { "S": "green" },
+          "protection_modifier": { "N": "2" }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "breath_attack": { "S": "fire" },
+          "damage_modifier": { "N": "2" },
+          "description": { "S": "Attacks faster" },
+          "family": { "S": "red" },
+          "protection_modifier": { "N": "-2" }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "breath_attack": { "S": "water" },
+          "damage_modifier": { "N": "1" },
+          "description": { "S": "Happy in water" },
+          "family": { "S": "blue" },
+          "protection_modifier": { "N": "-1" }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "breath_attack": { "S": "acid" },
+          "damage_modifier": { "N": "0" },
+          "description": { "S": "Prefers to bite" },
+          "family": { "S": "black" },
+          "protection_modifier": { "N": "0" }
+        }
+      }
+    }
+  ],
+  "dragon_bonus_attack": [
+    {
+      "PutRequest": {
+        "Item": {
+          "breath_attack": { "S": "acid" },
+          "description": { "S": "spews acid" },
+          "extra_damage": { "N": "3" },
+          "range": { "N": "5" }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "breath_attack": { "S": "electricty" },
+          "description": { "S": "bolts fly from mouth" },
+          "extra_damage": { "N": "3" },
+          "range": { "N": "5" }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "breath_attack": { "S": "water" },
+          "description": { "S": "hgh pressure jet over a large area" },
+          "extra_damage": { "N": "1" },
+          "range": { "N": "10" }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "breath_attack": { "S": "fear" },
+          "description": { "S": "Prevent all attacks next round" },
+          "extra_damage": { "N": "0" },
+          "range": { "N": "4" }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "breath_attack": { "S": "fire" },
+          "description": { "S": " Short blast of fire" },
+          "extra_damage": { "N": "8" },
+          "range": { "N": "4" }
+        }
+      }
+    }
+  ],
+  "dragon_stats": [
+    {
+      "PutRequest": {
+        "Item": {
+          "damage": { "N": "9" },
+          "description": {
+            "S": "From the northern fire tribe, Atlas was born from the ashes of his fallen father in combat. He is fearless and does not fear battle."
+          },
+          "dragon_name": { "S": "Atlas" },
+          "family": { "S": "red" },
+          "location_city": { "S": "anchorage" },
+          "location_country": { "S": "usa" },
+          "location_neighborhood": { "S": "w fireweed ln" },
+          "location_state": { "S": "alaska" },
+          "protection": { "N": "7" }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "damage": { "N": "4" },
+          "description": {
+            "S": "Bahamethut is an immortal dragon. Cruel and ruthless, he comes from the undead realm and is a judge among his dragon tribe. "
+          },
+          "dragon_name": { "S": "Bahamethut" },
+          "family": { "S": "black" },
+          "location_city": { "S": "las vegas" },
+          "location_country": { "S": "usa" },
+          "location_neighborhood": { "S": "shore breeze dr" },
+          "location_state": { "S": "nevada" },
+          "protection": { "N": "3" }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "damage": { "N": "6" },
+          "description": {
+            "S": "Frealu has an ice breath that can freeze her enemies into a paralyzed state. She is from the souther water tribe."
+          },
+          "dragon_name": { "S": "Frealu" },
+          "family": { "S": "blue" },
+          "location_city": { "S": "mesa" },
+          "location_country": { "S": "usa" },
+          "location_neighborhood": { "S": "e adobe st" },
+          "location_state": { "S": "arizona" },
+          "protection": { "N": "6" }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "damage": { "N": "2" },
+          "description": { "S": "Pradumo is a sage from the easter woods. She practices healing medicine." },
+          "dragon_name": { "S": "Pradumo" },
+          "family": { "S": "green" },
+          "location_city": { "S": "sterling" },
+          "location_country": { "S": "usa" },
+          "location_neighborhood": { "S": "broadway" },
+          "location_state": { "S": "colorado" },
+          "protection": { "N": "4" }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "damage": { "N": "9" },
+          "description": {
+            "S": "Tagnaurak's breathe melts and refines precious gems. He covets money and loves shiny things that he obsessively collects."
+          },
+          "dragon_name": { "S": "Tagnaurak" },
+          "family": { "S": "red" },
+          "location_city": { "S": "las vegas" },
+          "location_country": { "S": "usa" },
+          "location_neighborhood": { "S": "westcliff dr" },
+          "location_state": { "S": "nevada" },
+          "protection": { "N": "3" }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "damage": { "N": "8" },
+          "description": { "S": "Midnight has a stealth attack mode. He can disappear and ghost for sneak attacks." },
+          "dragon_name": { "S": "Midnight" },
+          "family": { "S": "black" },
+          "location_city": { "S": "cupertino" },
+          "location_country": { "S": "usa" },
+          "location_neighborhood": { "S": "pear tree ln" },
+          "location_state": { "S": "california" },
+          "protection": { "N": "8" }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "damage": { "N": "5" },
+          "description": { "S": "Longlu is a healer in the water tribe. She heals warriors who have known battle." },
+          "dragon_name": { "S": "Longlu" },
+          "family": { "S": "blue" },
+          "location_city": { "S": "hilo" },
+          "location_country": { "S": "usa" },
+          "location_neighborhood": { "S": "mona loop" },
+          "location_state": { "S": "hawaii" },
+          "protection": { "N": "8" }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "damage": { "N": "4" },
+          "description": {
+            "S": "Dexler is a protector of the earth and forests. He is as green as the earth and burrows into the ground for protection and extra defense."
+          },
+          "dragon_name": { "S": "Dexler" },
+          "family": { "S": "green" },
+          "location_city": { "S": "lexington" },
+          "location_country": { "S": "usa" },
+          "location_neighborhood": { "S": "bellcastle rd" },
+          "location_state": { "S": "kentucky" },
+          "protection": { "N": "2" }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "damage": { "N": "2" },
+          "description": {
+            "S": "Fireball is a young dragon in training. He is learning how to control his fire, but is still lethal."
+          },
+          "dragon_name": { "S": "Fireball" },
+          "family": { "S": "red" },
+          "location_city": { "S": "bangor" },
+          "location_country": { "S": "usa" },
+          "location_neighborhood": { "S": "stillwater ave" },
+          "location_state": { "S": "maine" },
+          "protection": { "N": "6" }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "damage": { "N": "4" },
+          "description": {
+            "S": "Shadow is one of the stealthiest dragons. He can disappear and is known to assassinate many of his enemies."
+          },
+          "dragon_name": { "S": "Shadow" },
+          "family": { "S": "black" },
+          "location_city": { "S": "eden" },
+          "location_country": { "S": "usa" },
+          "location_neighborhood": { "S": "church st" },
+          "location_state": { "S": "mississsippi" },
+          "protection": { "N": "4" }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "damage": { "N": "4" },
+          "description": {
+            "S": "Herma is a wise water sage dragon. Dragons travel from all the land to seek her counsel and her wisdom."
+          },
+          "dragon_name": { "S": "Herma" },
+          "family": { "S": "blue" },
+          "location_city": { "S": "twin falls" },
+          "location_country": { "S": "usa" },
+          "location_neighborhood": { "S": "applewood dr" },
+          "location_state": { "S": "idaho" },
+          "protection": { "N": "8" }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "damage": { "N": "6" },
+          "description": {
+            "S": "Samurilio wears protective armor that gives him a defense boost in battle. He holds honor for his earth tribe."
+          },
+          "dragon_name": { "S": "Samurilio" },
+          "family": { "S": "green" },
+          "location_city": { "S": "las vegas" },
+          "location_country": { "S": "usa" },
+          "location_neighborhood": { "S": "harmony st" },
+          "location_state": { "S": "nevada" },
+          "protection": { "N": "10" }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "damage": { "N": "4" },
+          "description": { "S": "Firestorm can summon a fire storm of hail and rain, that burns his opponents." },
+          "dragon_name": { "S": "Firestorm" },
+          "family": { "S": "red" },
+          "location_city": { "S": "tempe" },
+          "location_country": { "S": "usa" },
+          "location_neighborhood": { "S": "e laguna dr" },
+          "location_state": { "S": "arizona" },
+          "protection": { "N": "9" }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "damage": { "N": "9" },
+          "description": {
+            "S": "Sonic has black spikes that can penetrate his enemies. He has a spiked tail that can attack his opponents."
+          },
+          "dragon_name": { "S": "Sonic" },
+          "family": { "S": "black" },
+          "location_city": { "S": "flagstaff" },
+          "location_country": { "S": "usa" },
+          "location_neighborhood": { "S": "lake mary rd" },
+          "location_state": { "S": "arizona" },
+          "protection": { "N": "8" }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "damage": { "N": "4" },
+          "description": { "S": "Hydrasha is a double headed dragon. She wields both ice and water." },
+          "dragon_name": { "S": "Hydraysha" },
+          "family": { "S": "blue" },
+          "location_city": { "S": "san diego" },
+          "location_country": { "S": "usa" },
+          "location_neighborhood": { "S": "hazard way" },
+          "location_state": { "S": "california" },
+          "protection": { "N": "4" }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "damage": { "N": "7" },
+          "description": {
+            "S": "Cassidiuma is the personal protector and knight of the dragon queen Methryl. She is the queen's most loved and feared warrior."
+          },
+          "dragon_name": { "S": "Cassidiuma" },
+          "family": { "S": "green" },
+          "location_city": { "S": "colby" },
+          "location_country": { "S": "usa" },
+          "location_neighborhood": { "S": "poplar st" },
+          "location_state": { "S": "kansas" },
+          "protection": { "N": "10" }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "damage": { "N": "8" },
+          "description": {
+            "S": "Isilier is one of the noblest dragon generals in the fire army. His fire attack is one of the strongest in the fleet."
+          },
+          "dragon_name": { "S": "Isilier" },
+          "family": { "S": "red" },
+          "location_city": { "S": "dover" },
+          "location_country": { "S": "usa" },
+          "location_neighborhood": { "S": "shank rd" },
+          "location_state": { "S": "delaware" },
+          "protection": { "N": "7" }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "damage": { "N": "4" },
+          "description": {
+            "S": "Sheblonguh breathes a dark mucus that blinds his enemies permanently and causes paralysis."
+          },
+          "dragon_name": { "S": "Sheblonguh" },
+          "family": { "S": "black" },
+          "location_city": { "S": "de moines" },
+          "location_country": { "S": "usa" },
+          "location_neighborhood": { "S": "maple st" },
+          "location_state": { "S": "iowa" },
+          "protection": { "N": "6" }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "damage": { "N": "9" },
+          "description": { "S": "Frost can create an eternal winter. He is from the ice tribe of Lanzu." },
+          "dragon_name": { "S": "Frost" },
+          "family": { "S": "blue" },
+          "location_city": { "S": "las vegas" },
+          "location_country": { "S": "usa" },
+          "location_neighborhood": { "S": "hills creek dr" },
+          "location_state": { "S": "nevada" },
+          "protection": { "N": "3" }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "damage": { "N": "7" },
+          "description": {
+            "S": "Ragnorl is a rogue dragon, disowned from his own tribe. He can change colors to blend with the earth around him."
+          },
+          "dragon_name": { "S": "Ragnorl" },
+          "family": { "S": "green" },
+          "location_city": { "S": "chandler" },
+          "location_country": { "S": "usa" },
+          "location_neighborhood": { "S": "w german rd" },
+          "location_state": { "S": "arizona" },
+          "protection": { "N": "7" }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "damage": { "N": "9" },
+          "description": { "S": "Eislex flies with the fire sprites. He protects them and is their guardian." },
+          "dragon_name": { "S": "Eislex" },
+          "family": { "S": "red" },
+          "location_city": { "S": "st. cloud" },
+          "location_country": { "S": "usa" },
+          "location_neighborhood": { "S": "breckenridge ave" },
+          "location_state": { "S": "minnesota" },
+          "protection": { "N": "3" }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "damage": { "N": "8" },
+          "description": {
+            "S": "Smolder is a dragon that's bred strictly for battle. Ferocious and fearless, this dragon has an aggressive attack."
+          },
+          "dragon_name": { "S": "Smolder" },
+          "family": { "S": "black" },
+          "location_city": { "S": "tampa" },
+          "location_country": { "S": "usa" },
+          "location_neighborhood": { "S": "ashley st" },
+          "location_state": { "S": "florida" },
+          "protection": { "N": "4" }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "damage": { "N": "4" },
+          "description": {
+            "S": "Protheus is a wise and ancient dragon that serves on the grand council in the sky world. He uses his power to calm those near him."
+          },
+          "dragon_name": { "S": "Protheus" },
+          "family": { "S": "blue" },
+          "location_city": { "S": "brandon" },
+          "location_country": { "S": "usa" },
+          "location_neighborhood": { "S": "e morgan st" },
+          "location_state": { "S": "florida" },
+          "protection": { "N": "4" }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "damage": { "N": "7" },
+          "description": {
+            "S": "Shulmi is the fastest dragon that can escape any battle. She can outmaneuver most enemies."
+          },
+          "dragon_name": { "S": "Shulmi" },
+          "family": { "S": "green" },
+          "location_city": { "S": "denver" },
+          "location_country": { "S": "usa" },
+          "location_neighborhood": { "S": "colfax" },
+          "location_state": { "S": "colorado" },
+          "protection": { "N": "10" }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "damage": { "N": "6" },
+          "description": {
+            "S": "Xanya is the fire tribe's banished general. She broke ranks and has been wandering ever since."
+          },
+          "dragon_name": { "S": "Xanya" },
+          "family": { "S": "red" },
+          "location_city": { "S": "las vegas" },
+          "location_country": { "S": "usa" },
+          "location_neighborhood": { "S": "e clark ave" },
+          "location_state": { "S": "nevada" },
+          "protection": { "N": "6" }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "damage": { "N": "9" },
+          "description": {
+            "S": "Belonging to no tribe, Magnum is a wanderer who finds his own path and can be your best friend, or worst enemy."
+          },
+          "dragon_name": { "S": "Magnum" },
+          "family": { "S": "black" },
+          "location_city": { "S": "conway" },
+          "location_country": { "S": "usa" },
+          "location_neighborhood": { "S": "prince st" },
+          "location_state": { "S": "arkansas" },
+          "protection": { "N": "8" }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "damage": { "N": "5" },
+          "description": { "S": "Yuxo is a Dragon of the ocean. She breathes underwater and protects oceania." },
+          "dragon_name": { "S": "Yuxo" },
+          "family": { "S": "blue" },
+          "location_city": { "S": "chicago" },
+          "location_country": { "S": "usa" },
+          "location_neighborhood": { "S": "w fullerton ave" },
+          "location_state": { "S": "illinois" },
+          "protection": { "N": "3" }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "damage": { "N": "2" },
+          "description": {
+            "S": "Castral lives in the mighty mountain. He has built an underground of tunnels from which he terrorizes."
+          },
+          "dragon_name": { "S": "Castral" },
+          "family": { "S": "green" },
+          "location_city": { "S": "flint" },
+          "location_country": { "S": "usa" },
+          "location_neighborhood": { "S": "davison rd" },
+          "location_state": { "S": "michigan" },
+          "protection": { "N": "6" }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "damage": { "N": "7" },
+          "description": {
+            "S": "Languatha is a noble fire dragon and direct heir to the fire tribe's throne. She is cunning and wise, but has a venomous bite."
+          },
+          "dragon_name": { "S": "Languatha" },
+          "family": { "S": "red" },
+          "location_city": { "S": "portland" },
+          "location_country": { "S": "usa" },
+          "location_neighborhood": { "S": "rowe ave" },
+          "location_state": { "S": "maine" },
+          "protection": { "N": "2" }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "damage": { "N": "4" },
+          "description": { "S": "Mino is a dwarf dragon. He's small but fast and can fly undetected by his enemies." },
+          "dragon_name": { "S": "Mino" },
+          "family": { "S": "black" },
+          "location_city": { "S": "gorham" },
+          "location_country": { "S": "usa" },
+          "location_neighborhood": { "S": "school st" },
+          "location_state": { "S": "maine" },
+          "protection": { "N": "8" }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "damage": { "N": "9" },
+          "description": {
+            "S": "Sukola is protector of the skies. She stands as sentinel to the sky world and is full of valor and strength."
+          },
+          "dragon_name": { "S": "Sukola" },
+          "family": { "S": "blue" },
+          "location_city": { "S": "las vegas" },
+          "location_country": { "S": "usa" },
+          "location_neighborhood": { "S": "timber rose dr" },
+          "location_state": { "S": "nevada" },
+          "protection": { "N": "7" }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "damage": { "N": "3" },
+          "description": {
+            "S": "Jerichombur is a dragon of mischief. His earth crushing roar can be heard for miles."
+          },
+          "dragon_name": { "S": "Jerichombur" },
+          "family": { "S": "green" },
+          "location_city": { "S": "las vegas" },
+          "location_country": { "S": "usa" },
+          "location_neighborhood": { "S": "red twig dr" },
+          "location_state": { "S": "nevada" },
+          "protection": { "N": "5" }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "damage": { "N": "4" },
+          "description": {
+            "S": "Omnitrek is a fire dragon that uses his fire breathe to hypnotize his opponents. He is from the fire tribe."
+          },
+          "dragon_name": { "S": "Omnitrek" },
+          "family": { "S": "red" },
+          "location_city": { "S": "las vegas" },
+          "location_country": { "S": "usa" },
+          "location_neighborhood": { "S": "eagle hills dr" },
+          "location_state": { "S": "nevada" },
+          "protection": { "N": "6" }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "damage": { "N": "2" },
+          "description": {
+            "S": "Lucian is a trickster. His deadly smoke attack confuses and berserks his enemies into a panicked frenzy."
+          },
+          "dragon_name": { "S": "Lucian" },
+          "family": { "S": "black" },
+          "location_city": { "S": "chambless" },
+          "location_country": { "S": "usa" },
+          "location_neighborhood": { "S": "balfor rd" },
+          "location_state": { "S": "california" },
+          "protection": { "N": "4" }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "damage": { "N": "7" },
+          "description": {
+            "S": "Sprinkles is a celebrity dragon. He travels as a bard telling tales and songs of heroic feats."
+          },
+          "dragon_name": { "S": "Sprinkles" },
+          "family": { "S": "blue" },
+          "location_city": { "S": "amboy" },
+          "location_country": { "S": "usa" },
+          "location_neighborhood": { "S": "devers ave" },
+          "location_state": { "S": "california" },
+          "protection": { "N": "9" }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "damage": { "N": "1" },
+          "description": {
+            "S": "Prythus is a warlock dragon. He casts spells and can summon creatures to help in fight in battle."
+          },
+          "dragon_name": { "S": "Prythus" },
+          "family": { "S": "green" },
+          "location_city": { "S": "ankeny" },
+          "location_country": { "S": "usa" },
+          "location_neighborhood": { "S": "ne eaglewood dr" },
+          "location_state": { "S": "iowa" },
+          "protection": { "N": "5" }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "damage": { "N": "9" },
+          "description": {
+            "S": "Crimson is a soldier in the dragon fire army. He breathes fire lightning for a multiple attack."
+          },
+          "dragon_name": { "S": "Crimson" },
+          "family": { "S": "red" },
+          "location_city": { "S": "las vegas" },
+          "location_country": { "S": "usa" },
+          "location_neighborhood": { "S": "edna ave" },
+          "location_state": { "S": "nevada" },
+          "protection": { "N": "3" }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "damage": { "N": "4" },
+          "description": { "S": "Nightingale uses her song to lull and seduce her opponents. She is deadly." },
+          "dragon_name": { "S": "Nightingale" },
+          "family": { "S": "black" },
+          "location_city": { "S": "eagan" },
+          "location_country": { "S": "usa" },
+          "location_neighborhood": { "S": "short line" },
+          "location_state": { "S": "minnesota" },
+          "protection": { "N": "6" }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "damage": { "N": "3" },
+          "description": {
+            "S": "Restula is one of the rarest dragons. She has only been seen once every millennia but is said to bless the planet with her tears."
+          },
+          "dragon_name": { "S": "Restula" },
+          "family": { "S": "blue" },
+          "location_city": { "S": "las vegas" },
+          "location_country": { "S": "usa" },
+          "location_neighborhood": { "S": "gaye ln" },
+          "location_state": { "S": "nevada" },
+          "protection": { "N": "4" }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "damage": { "N": "8" },
+          "description": {
+            "S": "Amaron is a peacekeeper dragon and defender of all living things. He is from the mythical forests of Jeaunord that are deeply rooted with magic."
+          },
+          "dragon_name": { "S": "Amaron" },
+          "family": { "S": "green" },
+          "location_city": { "S": "waterville" },
+          "location_country": { "S": "usa" },
+          "location_neighborhood": { "S": "yeaton st" },
+          "location_state": { "S": "maine" },
+          "protection": { "N": "8" }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "damage": { "N": "7" },
+          "description": {
+            "S": "Ruby has a skin and coat that's as hard as gems. This gives her extra defense against her enemies."
+          },
+          "dragon_name": { "S": "Ruby" },
+          "family": { "S": "red" },
+          "location_city": { "S": "homer" },
+          "location_country": { "S": "usa" },
+          "location_neighborhood": { "S": "lakeside dr" },
+          "location_state": { "S": "alaska" },
+          "protection": { "N": "9" }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "damage": { "N": "4" },
+          "description": {
+            "S": "Tornado has a fierce wind attack that traps his opponents in cyclones. His wings are larger than most dragons."
+          },
+          "dragon_name": { "S": "Tornado" },
+          "family": { "S": "black" },
+          "location_city": { "S": "las vegas" },
+          "location_country": { "S": "usa" },
+          "location_neighborhood": { "S": "sun city blvd" },
+          "location_state": { "S": "nevada" },
+          "protection": { "N": "3" }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "damage": { "N": "8" },
+          "description": {
+            "S": "Galadi is an ancient and rare dragon from the original dragon fathers. He lives in the sky kingdom and serves on the grand counsel."
+          },
+          "dragon_name": { "S": "Galadi" },
+          "family": { "S": "blue" },
+          "location_city": { "S": "page" },
+          "location_country": { "S": "usa" },
+          "location_neighborhood": { "S": "morgan rd" },
+          "location_state": { "S": "arizona" },
+          "protection": { "N": "6" }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "damage": { "N": "6" },
+          "description": {
+            "S": "Warcumer is part of the earth tribe and has a deadly ground attack. Wide and stout, the dragon fights best on the ground."
+          },
+          "dragon_name": { "S": "Warcumer" },
+          "family": { "S": "green" },
+          "location_city": { "S": "las vegas" },
+          "location_country": { "S": "usa" },
+          "location_neighborhood": { "S": "magic flower ave" },
+          "location_state": { "S": "nevada" },
+          "protection": { "N": "1" }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "damage": { "N": "4" },
+          "description": { "S": "Norslo breathes lava instead of fire. He creates magna flows and traps his enemies." },
+          "dragon_name": { "S": "Norslo" },
+          "family": { "S": "red" },
+          "location_city": { "S": "encino" },
+          "location_country": { "S": "usa" },
+          "location_neighborhood": { "S": "margate st" },
+          "location_state": { "S": "california" },
+          "protection": { "N": "7" }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "damage": { "N": "9" },
+          "description": {
+            "S": "Blackhole is dragon demon. He can breathe a black hole that sucks his enemies into the void of everlasting darkness."
+          },
+          "dragon_name": { "S": "Blackhole" },
+          "family": { "S": "black" },
+          "location_city": { "S": "north hills" },
+          "location_country": { "S": "usa" },
+          "location_neighborhood": { "S": "nordhoff st" },
+          "location_state": { "S": "california" },
+          "protection": { "N": "9" }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "damage": { "N": "7" },
+          "description": { "S": "Treklor is a Dragon God. He is the mightiest of the grand council of dragons." },
+          "dragon_name": { "S": "Treklor" },
+          "family": { "S": "blue" },
+          "location_city": { "S": "lewisville" },
+          "location_country": { "S": "usa" },
+          "location_neighborhood": { "S": "rangeland rd" },
+          "location_state": { "S": "kentucky" },
+          "protection": { "N": "2" }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "damage": { "N": "4" },
+          "description": {
+            "S": "Havarth was born from the center of his planet, Grindru. The earth and mountains obey his call."
+          },
+          "dragon_name": { "S": "Havarth" },
+          "family": { "S": "green" },
+          "location_city": { "S": "las vegas" },
+          "location_country": { "S": "usa" },
+          "location_neighborhood": { "S": "la vid ct" },
+          "location_state": { "S": "nevada" },
+          "protection": { "N": "6" }
+        }
+      }
+    }
+  ]
+}
