@@ -40,7 +40,7 @@
     "@aws-cdk/aws-s3-deployment": "^1.55.0",
     "@aws-cdk/core": "1.55.0",
     "@types/aws-lambda": "^8.10.59",
-    "aws-sdk": "^2.722.0",
+    "aws-sdk": "^2.814.0",
     "source-map-support": "^0.5.19"
   }
 }
